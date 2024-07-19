@@ -15,6 +15,7 @@ class Sync(Cog):
 
     @Cog.listener("on_message")
     async def message_sync(self, message: Message):
+        if message.author.bot: return
         current_guild_config = await self.bot.database["config"].find_one(
             {
                 "_id": message.guild.id
