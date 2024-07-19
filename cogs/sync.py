@@ -84,6 +84,7 @@ class Sync(Cog):
             guild_messages = original_message.get("guild_messages")
             async with ClientSession() as session:
                 async for guild in guild_config_list:
+                    if guild.get("_id") == message_after.guild.id: continue
                     webhook = Webhook.from_url(
                         guild.get("sync_webhook"),
                         session = session
