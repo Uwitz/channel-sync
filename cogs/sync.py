@@ -1,7 +1,7 @@
 import re
 
-from discord import Message, SyncWebhookMessage
-from discord import SyncWebhook
+from discord import Message, WebhookMessage
+from discord import Webhook
 from discord.ext.commands import Cog
 
 from typing import List
@@ -44,8 +44,8 @@ class Sync(Cog):
             }
             async for guild in guild_config_list:
                 if guild.get("_id") != message.guild.id:
-                    webhook = SyncWebhook.from_url(guild.get("sync_webhook"))
-                    webhook_message: SyncWebhookMessage = webhook.send(
+                    webhook = Webhook.from_url(guild.get("sync_webhook"))
+                    webhook_message: WebhookMessage = webhook.send(
                         username = f"{message.author.display_name} ({message.guild.name})",
                         avatar_url = message.author.display_avatar.url,
                         content = message_content,
