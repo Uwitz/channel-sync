@@ -5,6 +5,7 @@ from discord import Webhook
 from discord.ext.commands import Cog
 
 from typing import List
+from aiohttp import ClientSession
 
 def _clean_message(message: str) -> str:
     return re.sub(r'@(everyone|here|[!&]?[0-9]{17,21})', '@\u200b\\1', message)
@@ -42,18 +43,22 @@ class Sync(Cog):
                 },
                 "attachments": message.attachments
             }
-            async for guild in guild_config_list:
-                if guild.get("_id") != message.guild.id:
-                    webhook = Webhook.from_url(guild.get("sync_webhook"))
-                    webhook_message: WebhookMessage = webhook.send(
-                        username = f"{message.author.display_name} ({message.guild.name})",
-                        avatar_url = message.author.display_avatar.url,
-                        content = message_content,
-                        files = message.attachments,
-                        allowed_mentions = False,
-                        wait = True
-                    )
-                    message_data["guild_messages"][f"{guild.get('_id')}"] = webhook_message.id
+            async with ClientSession() as session:
+                async for guild in guild_config_list:
+                    if guild.get("_id") != message.guild.id:
+                        webhook = Webhook.from_url(
+                            guild.get("sync_webhook"),
+                            session = session
+                        )
+                        webhook_message: WebhookMessage = await webhook.send(
+                            username = f"{message.author.display_name} ({message.guild.name})",
+                            avatar_url = message.author.display_avatar.url,
+                            content = message_content,
+                            files = message.attachments,
+                            allowed_mentions = False,
+                            wait = True
+                        )
+                        message_data["guild_messages"][f"{guild.get('_id')}"] = webhook_message.id
 
             await self.bot.database["messages"].insert_one(message_data)
 
