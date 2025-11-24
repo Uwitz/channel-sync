@@ -1,6 +1,6 @@
 # channel-sync
 
-[![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?&logo=discord&logoColor=white)](https://discord.gg/YwC6VpEPfq) [![Actions status](https://github.com/Uwitz/channel-sync/actions/workflows/codeql.yml/badge.svg)](https://github.com/Uwitz/channel-sync/actions)
+[![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?&logo=discord&logoColor=white)](https://discord.gg/YwC6VpEPfq) [![CodeQL](https://github.com/Uwitz/channel-sync/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/Uwitz/channel-sync/actions/workflows/github-code-scanning/codeql)
 
 A discord bot (with modular code) that allows you to sync channel messages across multiple discord servers.
 ## Installation
